@@ -14,7 +14,7 @@
 #include <Adafruit_BMP280.h>
 #include <HX711.h>
 
-//Initialisation of HX711 (Load cell amplifier)
+//Initialisation of HX711 ( -Load cell amplifier- )
 //----------------------------------------------
 #define DOUT A2				//arduino pin for DOUT signal
 #define CLK  A1				//arduino pin for CLK signal
