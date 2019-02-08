@@ -1,0 +1,2 @@
+# BeeScale
+Scales for BeeHive
