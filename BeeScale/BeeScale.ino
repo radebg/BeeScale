@@ -2,6 +2,7 @@
  Name:		BeeScale.ino
  Created:	10/18/2018 9:36:26 PM
  Author:	radebg
+ Microcontroller: ArduinoProMini 8Mhz, 3.3V
 */
 
 #include <Adafruit_Sensor.h>
