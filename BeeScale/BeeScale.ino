@@ -2,6 +2,7 @@
  Name:		BeeScale.ino
  Created:	10/18/2018 9:36:26 PM
  Author:	radebg
+ Edited: 07/04/2019
 */
 
 #include <Adafruit_Sensor.h>
@@ -59,7 +60,7 @@ const byte gsmWakePin = 4;				// pin used for waking up the GSM module from slee
 
 char print_date[16];
 
-int battValue;
+float battValue;
 float voltage;
 int batteryMax = 100;
 bool lowBattSend = false;
@@ -79,7 +80,7 @@ const String thingSpeakUpadate = "GET http://api.thingspeak.com/update?api_key=0
 float currentTemperature;			// current measured temperature
 float currentHumidity;				// current measured relative air humidity
 
-SoftwareSerial gsmSerial(7, 8);		// Define pins for communicating with gsm module
+SoftwareSerial gsmSerial(8, 7);		// Define pins for communicating with gsm module
 
 DS3231 Clock;								//define class for DS3231 clock
 byte ADay, AHour, AMinute, ASecond, ABits;	// define clock variables
@@ -376,7 +377,7 @@ float readBattery()
 
 	SO!!!
 
-	We have to scale input voltage on that pin to be at maximum 1.1V when battery id full.
+	We have to scale input voltage on that pin to be at maximum 1.1V when battery is full.
 	It can be done with voltage divider (see schematics)
 	With battery I use maximum value on the pin is 930, and I consider battery empty when value falls to 744)
 
