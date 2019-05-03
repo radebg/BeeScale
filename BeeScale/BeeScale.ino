@@ -100,32 +100,39 @@ void setup()
 
 	// initialize serial port
 	Serial.begin(9600);
-	Serial.println("...+++++++++...1");
+	Serial.println("...+++++++++...1"); //debugging purposes only, can comment whole line
 
 	// initialize rtc communication trough i2c port (on A4 and A5)
 	Wire.begin();
-	Serial.println("...+++++++++...2");
+	Serial.println("...+++++++++...2"); //debugging purposes only, can comment whole line
 
 	// initialize software serial port for communication with gsm module SIM800l
 	gsmSerial.begin(9600);
-	Serial.println("...+++++++++...3");
+	Serial.println("...+++++++++...3"); //debugging purposes only, can comment whole line
 	// Initialize DS3231
 	clock.begin();
 
 	/*
-	Read system date and time and put it on ds3231 chip.
+	Read system date and time and put it on ds3231 chip
+	Uncomment next line only first time when U need to set up ds3231 clock (first time U upload skech to arduino).
+	Right after that U need to upload sketc with commented same next line 
+	It must be done because every time U reset arduino it will upload system date and time. And if arduino is not resetted via PC
+	(pressing the button, power on and off...) it will upload wrong date and time.
+
+	If you already setup clock on ds3231 keep next line commented
 	*/
 	//clock.setDateTime(__DATE__, __TIME__);
-	Serial.println("...+++++++++...4");
+	Serial.println("...+++++++++...4"); //debugging purposes only, can comment whole line
 
 	// Disable square wave output (use alarm triggering)
+	// setting 0Eh register on ds3231. very important! see technical specs of ds3231!!
 	Wire.beginTransmission(0x68);
 	Wire.write(0x0e);
 	Wire.write(0b00110111);
 	Wire.endTransmission();
-	Serial.println("...+++++++++...5");
+	Serial.println("...+++++++++...5"); //debugging purposes only, can comment whole line
 
-	// Disable DS3231 Alarms 1 and 2
+	// Disable DS3231 Alarms 1 and 2 at the begining
 	clock.armAlarm1(false);
 	clock.armAlarm2(false);
 	clock.clearAlarm1();
@@ -134,12 +141,18 @@ void setup()
 
 	// Put PIN 2 as an Interrupt (0)
 	// Put PIN 3 as an Interrupt (1)
+	// For now only interrupt 0 is used (for waking up after alarm trigger)
+	// Second interrupt could be used for emergency trigger (someone move beehive, huge loss in weight...)
 	pinMode(wakePin, INPUT_PULLUP);
 	pinMode(wakePin2, INPUT_PULLUP);
 	attachInterrupt(digitalPinToInterrupt(wakePin), wakeUp, CHANGE);
 	attachInterrupt(digitalPinToInterrupt(wakePin2), wakeUp, CHANGE);
 
 	// Define when alarm will wake up arduino
+	// First line make alarm trigger every full hour
+	// Second line make alarm trigger every hour but when it is 30 minutes past full hour
+	// Third line make alarm trigger every minute
+	// See technical spec for ds3231
 	//________________________________________________________
 	clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
 	clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
@@ -161,6 +174,7 @@ void setup()
 	ReadGsmBuffer();
 
 	// Test sensors and clock
+	// TODO: Finish tis debugging section
 	dt = clock.getDateTime();
 	sprintf(print_date, "%02d/%02d/%d %02d:%02d:%02d", dt.day, dt.month, dt.year, dt.hour, dt.minute, dt.second);
 	Serial.println(print_date);
@@ -206,11 +220,6 @@ void loop()
 
 	PurgeGsmBuffer();
 	delay(200);
-
-	//if (CheckSms() != 0)
-	//{
-	//	ReadSms(recievedNumberOfSms);
-	//}
 
 	// Display the date and time
 	dt = clock.getDateTime();
@@ -381,7 +390,7 @@ float readBattery()
 
 	We have to scale input voltage on that pin to be at maximum 1.1V when battery is full.
 	It can be done with voltage divider (see schematics)
-	With battery I use maximum value on the pin is 1035mV (on voltage divider), and I consider battery empty when value falls to 744)
+	With battery I use maximum value on the pin is 1035mV (on voltage divider), and I consider battery empty when value falls to 800)
 
 	*/
 	voltage = map(voltage, 800, 1035, 0, 100);
@@ -394,13 +403,6 @@ float readBattery()
 		batteryMax = voltage;
 	}
 
-	//Serial.println("Battery condition is: " + String(voltage)+"%");
-	//delay(3000);
-	//if (voltage > 50 && !lowBattSend)
-	//{
-	//	SendSms("063397695", "Battery OK");
-	//}
-	//lowBattSend = true;
 	return voltage;
 }
 int ReadAtmospherics()
