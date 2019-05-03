@@ -25,7 +25,7 @@ HX711 scale(DOUT, CLK);		//initialisation of HX711
 // explanation below
 
 //Change this calibration factor as per your load cell once it is found you many need to vary it in thousands
-float scaleCalibrationFactor = -39750;	//Calibration factor for the scale 
+float scaleCalibrationFactor = -20350;	//Calibration factor for the scale 
 
 float weight;							//Global variable for storing current weight on the scales
 
@@ -59,7 +59,7 @@ const byte gsmWakePin = 4;				// pin used for waking up the GSM module from slee
 
 char print_date[16];
 
-int battValue;
+float battValue;
 float voltage;
 int batteryMax = 100;
 bool lowBattSend = false;
@@ -79,7 +79,7 @@ const String thingSpeakUpadate = "GET http://api.thingspeak.com/update?api_key=0
 float currentTemperature;			// current measured temperature
 float currentHumidity;				// current measured relative air humidity
 
-SoftwareSerial gsmSerial(7, 8);		// Define pins for communicating with gsm module
+SoftwareSerial gsmSerial(8, 7);		// Define pins for communicating with gsm module
 
 DS3231 Clock;								//define class for DS3231 clock
 byte ADay, AHour, AMinute, ASecond, ABits;	// define clock variables
@@ -88,8 +88,8 @@ bool ADy, A12h, Apm;						//define clock variables
 void setup()
 {
 	//Scale setup
-	scale.set_scale(-39750);  //Calibration Factor obtained from calibrating sketch
-	scale.tare();             //Reset the scale to 0  
+	scale.set_scale(scaleCalibrationFactor);	//Calibration Factor obtained from calibrating sketch
+	scale.tare();								//Reset the scale to 0  
 
 	digitalWrite(gsmWakePin, HIGH);
 	analogReference(INTERNAL);
@@ -141,9 +141,9 @@ void setup()
 
 	// Define when alarm will wake up arduino
 	//________________________________________________________
-	//clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
-	//clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
-	clock.setAlarm1(0, 0, 0, 0, DS3231_MATCH_S);
+	clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
+	clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
+	//clock.setAlarm1(0, 0, 0, 0, DS3231_MATCH_S);
 	//________________________________________________________
 
 	Serial.println("...+++++++++...7");
@@ -358,11 +358,14 @@ float readBattery()
 	for (int i = 1; i <= 10; i++)
 	{
 		battValue = analogRead(A0);
+		//Serial.println(battValue);
 		voltage = voltage + battValue;
+		//Serial.println((float)battValue,3);
 		delay(200);
-	}
+		}
 	voltage = voltage / 10;
-
+	voltage = voltage / 1023 * 1100;
+	//Serial.println((float)voltage, 3);
 	//map min and max voltage values on analog pin to scale o% to 100%
 	/*
 	For clarification:
@@ -376,12 +379,12 @@ float readBattery()
 
 	SO!!!
 
-	We have to scale input voltage on that pin to be at maximum 1.1V when battery id full.
+	We have to scale input voltage on that pin to be at maximum 1.1V when battery is full.
 	It can be done with voltage divider (see schematics)
-	With battery I use maximum value on the pin is 930, and I consider battery empty when value falls to 744)
+	With battery I use maximum value on the pin is 1035mV (on voltage divider), and I consider battery empty when value falls to 744)
 
 	*/
-	voltage = map(voltage, 744, 930, 0, 100);
+	voltage = map(voltage, 800, 1035, 0, 100);
 	if (voltage > batteryMax)
 	{
 		voltage = batteryMax;
@@ -420,6 +423,6 @@ float readWeight(int loops)
 {
 	weight = scale.get_units(), 2;
 
-	//scale.tare();
+	scale.tare();
 	return weight;
 }
