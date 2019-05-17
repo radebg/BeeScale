@@ -155,9 +155,9 @@ void setup()
 	// Third line make alarm trigger every minute
 	// See technical spec for ds3231
 	//________________________________________________________
-	clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
-	clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
-	//clock.setAlarm1(0, 0, 0, 0, DS3231_MATCH_S);
+	//clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
+	//clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
+	clock.setAlarm1(0, 0, 0, 0, DS3231_MATCH_S);
 	//________________________________________________________
 
 	Serial.println("...+++++++++...7");
@@ -424,8 +424,7 @@ int ReadAtmospherics()
 }
 float readWeight(int loops)
 {
-	weight = scale.get_units(), 2;
-
+	weight = scale.get_units(), 3;
 	scale.tare();
 	return weight;
 }
