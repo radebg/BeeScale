@@ -428,7 +428,7 @@ int ReadAtmospherics()
 float readWeight(int loops)
 {
 	weight = scale.get_units(), 3;
-
+	//Serial.println(weight);
 	scale.tare();
 	return weight;
 }
