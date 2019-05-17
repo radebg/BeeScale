@@ -5,15 +5,15 @@
  Microcontroller: ArduinoProMini 8Mhz, 3.3V
 */
 
-#include <Adafruit_Sensor.h>
+//#include <Adafruit_Sensor.h>
 #include <dht11.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
 #include <DS3231.h>
 #include <avr/sleep.h>
 #include <avr/power.h>
-#include <Adafruit_BMP280.h>
 #include <HX711.h>
+#include "SparkFunBME280.h"
 
 //Initialisation of HX711 ( -Load cell amplifier- )
 //----------------------------------------------
@@ -38,10 +38,11 @@ bool reseted = false;					//variable for falg that scale is resseted for today
 
 // initialisation of BMP280 sensor for Temperature, pressure and altitude
 //----------------------------------------------
-Adafruit_BMP280 bme;	// Define Pressure sensor class
+BME280 bme;	// Define Pressure sensor class
 float bmeTemperature;	// bme sensor variable for temperature
 float bmePressure;		// bme sensor variable for pressure
 float bmeAltitude;		// bme sensor variable for Altitude
+float bmeHumid;
 //----------------------------------------------
 // end of initialisation of BMP280 sensor for temperature, pressure and altitude
 
@@ -155,9 +156,9 @@ void setup()
 	// Third line make alarm trigger every minute
 	// See technical spec for ds3231
 	//________________________________________________________
-	clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
-	clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
-	//clock.setAlarm1(0, 0, 0, 0, DS3231_MATCH_S);
+	//clock.setAlarm1(0, 0, 30, 0, DS3231_MATCH_M_S);
+	//clock.setAlarm2(0, 0, 00, DS3231_MATCH_M);
+	clock.setAlarm1(0, 0, 0, 0, DS3231_MATCH_S);
 	//________________________________________________________
 
 	Serial.println("...+++++++++...7");
@@ -186,7 +187,8 @@ void setup()
 	Serial.println("Current humidity: " + String(currentHumidity) + "%");
 	Serial.println("Current temperature: " + String(currentTemperature) + "C");
 	Serial.println("Current temperature: " + String(bmeTemperature) + "C");
-	Serial.println("Current pressure: " + String(bmePressure) + "%");
+	Serial.println("Current pressure: " + String(bmePressure) + "mbr");
+	Serial.println("Current humid: " + String(bmeHumid) + "%");
 	Serial.println("Soil status: " + String(ReadSoil()) + "%");
 	Serial.println("Battery status: " + String(voltage) + "%");
 	Serial.println("Wieght: " + String(weight));
@@ -294,7 +296,7 @@ void Upload()
 	gsmSerial.println(F("AT+CIPSEND"));
 	delay(2000);
 	ReadGsmBuffer();
-	gsmSerial.println(thingSpeakUpadate + "&field1=" + String(currentTemperature) + "&field2=" + String(currentHumidity) + "&field3=" + String(voltage) + "&field4=" + String(bmeTemperature) + "&field5=" + String(bmePressure) + "&field6=" + String(bmeAltitude) + "&field7=" + String(weight) + "&field8=" + String(soilMoisture));
+	gsmSerial.println(thingSpeakUpadate + "&field1=" + String(currentTemperature) + "&field2=" + String(currentHumidity) + "&field3=" + String(voltage) + "&field4=" + String(bmeTemperature) + "&field5=" + String(bmePressure) + "&field6=" + String(bmeHumid) + "&field7=" + String(weight) + "&field8=" + String(soilMoisture));
 	delay(2000);
 	ReadGsmBuffer();
 	gsmSerial.println(String(char(26)));
@@ -413,18 +415,19 @@ int ReadAtmospherics()
 	currentTemperature = dht.temperature;			// set temperature readings in temperature array
 	currentHumidity = dht.humidity;					// set humidity readings in humidity array
 
-	if (!bme.begin())
+	if (!bme.beginI2C())
 	{
 		Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
 		//while (1);
 	}
-	bmeTemperature = bme.readTemperature();
-	bmePressure = (bme.readPressure() / 100);			// 100 Pa = 1 millibar
-	bmeAltitude = (bme.readAltitude(1013.27));		 //we assume that atmosferic pressure at sea level is 1013.27mb
+	bmeTemperature =bme.readTempC();
+	bmePressure = (bme.readFloatPressure() / 100);			// 100 Pa = 1 millibar
+	bmeAltitude = (bme.readFloatAltitudeMeters());			//we assume that atmosferic pressure at sea level is 1013.27mb
+	bmeHumid = (bme.readFloatHumidity());
 }
 float readWeight(int loops)
 {
-	weight = scale.get_units(), 2;
+	weight = scale.get_units(), 3;
 
 	scale.tare();
 	return weight;
