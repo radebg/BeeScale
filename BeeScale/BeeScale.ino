@@ -29,6 +29,7 @@ HX711 scale(DOUT, CLK);		//initialisation of HX711
 float scaleCalibrationFactor = -20350;	//Calibration factor for the scale 
 
 float weight;							//Global variable for storing current weight on the scales
+int weightInGrams;
 
 bool reseted = false;					//variable for falg that scale is resseted for today
 //----------------------------------------------
@@ -296,7 +297,7 @@ void Upload()
 	gsmSerial.println(F("AT+CIPSEND"));
 	delay(2000);
 	ReadGsmBuffer();
-	gsmSerial.println(thingSpeakUpadate + "&field1=" + String(currentTemperature) + "&field2=" + String(currentHumidity) + "&field3=" + String(voltage) + "&field4=" + String(bmeTemperature) + "&field5=" + String(bmePressure) + "&field6=" + String(bmeHumid) + "&field7=" + String(weight) + "&field8=" + String(soilMoisture));
+	gsmSerial.println(thingSpeakUpadate + "&field1=" + String(currentTemperature) + "&field2=" + String(currentHumidity) + "&field3=" + String(voltage) + "&field4=" + String(bmeTemperature) + "&field5=" + String(bmePressure) + "&field6=" + String(bmeHumid) + "&field7=" + String(weightInGrams) + "&field8=" + String(soilMoisture));
 	delay(2000);
 	ReadGsmBuffer();
 	gsmSerial.println(String(char(26)));
@@ -427,8 +428,18 @@ int ReadAtmospherics()
 }
 float readWeight(int loops)
 {
-	weight = scale.get_units(), 3;
-	//Serial.println(weight);
+	for (int i = 0; i < loops; i++)
+	{
+		weight = weight + scale.get_units(), 3;
+		//Serial.println(weight);
+		delay(100);
+	}
+	Serial.println(weight);
+	weight = weight / loops;
+	Serial.println(weight);
+	weightInGrams=weight*1000;
+	Serial.println(weightInGrams);
+
 	scale.tare();
-	return weight;
+	return 	weightInGrams;
 }
