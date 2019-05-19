@@ -397,7 +397,7 @@ float readBattery()
 	With battery I use maximum value on the pin is 1035mV (on voltage divider), and I consider battery empty when value falls to 800)
 
 	*/
-	voltage = map(voltage, 800, 1035, 0, 100);
+	voltage = map(voltage, 860, 1035, 0, 100);
 	if (voltage > batteryMax)
 	{
 		voltage = batteryMax;
@@ -429,12 +429,12 @@ int ReadAtmospherics()
 float readWeight(int loops)
 {
 	// for resetting purposes becouse scale have error measurement after big weight change
-	for (int i = 0; i < loops; i++)
-	{
-		weight = weight + scale.get_units(), 3;
-		//Serial.println(weight);
-		delay(100);
-	}
+	//for (int i = 0; i < loops; i++)
+	//{
+	//	weight = weight + scale.get_units(), 3;
+	//	//Serial.println(weight);
+	//	delay(100);
+	//}
 	weight = 0;
 	for (int i = 0; i < loops; i++)
 	{
