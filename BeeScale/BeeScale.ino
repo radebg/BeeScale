@@ -428,6 +428,14 @@ int ReadAtmospherics()
 }
 float readWeight(int loops)
 {
+	// for resetting purposes becouse scale have error measurement after big weight change
+	for (int i = 0; i < loops; i++)
+	{
+		weight = weight + scale.get_units(), 3;
+		//Serial.println(weight);
+		delay(100);
+	}
+	weight = 0;
 	for (int i = 0; i < loops; i++)
 	{
 		weight = weight + scale.get_units(), 3;
