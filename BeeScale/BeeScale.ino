@@ -51,27 +51,24 @@ float bmeHumid;
 
 dht11 dht;
 #define DHTPIN 5			//pin for DHT sensor
-
 DS3231 clock;
-
 RTCDateTime dt;
-
 const byte wakePin = 2;					// pin used for waking up the Arduino (interrupt 0)
 const byte wakePin2 = 3;				// pin used for waking up the Arduino (interrupt 1)
 const byte gsmWakePin = 4;				// pin used for waking up the GSM module from sleep mode
 
 char print_date[16];
 
-float battValue;
+//float battValue;
 float voltage;
 int batteryMax = 100;
-bool lowBattSend = false;
+//bool lowBattSend = false;
 
 // soil measurement
 float soilMoisture;
 float soilReading;
 
-String atResponse;
+//String atResponse;
 
 //String apn = "internet";				// APN of your provider
 //String username = "";					// username for your gprs provider
@@ -87,9 +84,11 @@ SoftwareSerial gsmSerial(8, 7);		// Define pins for communicating with gsm modul
 DS3231 Clock;								//define class for DS3231 clock
 byte ADay, AHour, AMinute, ASecond, ABits;	// define clock variables
 bool ADy, A12h, Apm;						//define clock variables
+int correction;
 
 void setup()
 {
+	pinMode(6, OUTPUT);
 	//Scale setup
 	scale.set_scale(scaleCalibrationFactor);	//Calibration Factor obtained from calibrating sketch
 	scale.tare();								//Reset the scale to 0  
@@ -149,7 +148,7 @@ void setup()
 	pinMode(wakePin, INPUT_PULLUP);
 	pinMode(wakePin2, INPUT_PULLUP);
 	attachInterrupt(digitalPinToInterrupt(wakePin), wakeUp, CHANGE);
-	attachInterrupt(digitalPinToInterrupt(wakePin2), wakeUp, CHANGE);
+	attachInterrupt(digitalPinToInterrupt(wakePin2), wakeUp2, CHANGE);
 
 	// Define when alarm will wake up arduino
 	// First line make alarm trigger every full hour
@@ -221,6 +220,13 @@ void loop()
 	// point of wakeing up arduino
 
 	delay(1000);
+	scale.power_up(); //Awake scale
+	digitalWrite(6, HIGH);
+	//while (digitalRead(3) == HIGH)
+	//{
+		delay(1000);
+	//}
+	digitalWrite(6, LOW);
 
 	PurgeGsmBuffer();
 	delay(200);
@@ -260,11 +266,10 @@ void PurgeGsmBuffer()
 		gsmSerial.read();
 	}
 }
-// function to upload temperature and relative humidity on thingSpeak IoT site
+// function to upload data on thingSpeak IoT site
 void Upload()
 {
 	Serial.println(F("Uploading:..."));
-
 	gsmSerial.println(F("AT+CREG?"));
 	delay(1000);
 	ReadGsmBuffer();
@@ -336,7 +341,7 @@ void goToSleep()
 	sleep_mode();
 
 	// The Arduino wake up here
-	delay(1000);
+	delay(100);
 	clock.clearAlarm1();						// Clear the DS3231 alarm (ready for the next triggering)
 	clock.clearAlarm2();						// Clear the DS3231 alarm (ready for the next triggering)
 }
@@ -344,14 +349,23 @@ void goToSleep()
 // ISR (Interrupt Service Routine) function to wake up the Arduino
 void wakeUp()
 {
+	//detachInterrupt(digitalPinToInterrupt(wakePin));
+	//detachInterrupt(digitalPinToInterrupt(wakePin2));
 	sleep_disable();							// Just after wake up, disable the sleeping mode
 	power_all_enable();
-	delay(2000);
+	//delay(2000);
+
+	digitalWrite(gsmWakePin, LOW);
+	scale.power_up(); //Awake scale
+}
+void wakeUp2()
+{
+	sleep_disable();							// Just after wake up, disable the sleeping mode
+	power_all_enable();
+	//delay(2000);
 	//detachInterrupt(0);
 	//detachInterrupt(1);
 	digitalWrite(gsmWakePin, LOW);
-	scale.power_up(); //Awake scale
-
 }
 float ReadSoil()
 {
@@ -359,7 +373,6 @@ float ReadSoil()
 	analogRead(A3);
 	delay(200);
 	soilReading = analogRead(A3); //reads the sensor value
-								  //Serial.println(soilReading); //prints out the sensor reading
 	soilMoisture = ((1023 - soilReading) / 1023) * 100;
 	analogReference(INTERNAL);
 	analogRead(A3);
@@ -370,10 +383,8 @@ float readBattery()
 	voltage = 0;
 	for (int i = 1; i <= 10; i++)
 	{
-		battValue = analogRead(A0);
-		//Serial.println(battValue);
+		float battValue = analogRead(A0);
 		voltage = voltage + battValue;
-		//Serial.println((float)battValue,3);
 		delay(200);
 		}
 	voltage = voltage / 10;
