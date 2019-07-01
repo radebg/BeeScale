@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2046
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeScale", "BeeScale\BeeScale.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeHive_Latest", "BeeHive_Latest\BeeHive_Latest.vcxproj", "{892EFC57-EE2F-45A1-9BD2-A194AF528F8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeeScaleMain", "BeeScaleMain\BeeScaleMain.csproj", "{4E53AA33-7616-4509-83E5-C54FE55096FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestScale", "..\..\..\Documents\Arduino\TestScale\TestScale.vcxproj", "{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,16 @@ Global
 		{4E53AA33-7616-4509-83E5-C54FE55096FE}.Release|x86.ActiveCfg = Release|x86
 		{4E53AA33-7616-4509-83E5-C54FE55096FE}.Release|x86.Build.0 = Release|x86
 		{4E53AA33-7616-4509-83E5-C54FE55096FE}.Release|x86.Deploy.0 = Release|x86
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|ARM.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|x64.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|x86.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|x86.Build.0 = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|ARM.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|ARM64.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|x64.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|x86.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
