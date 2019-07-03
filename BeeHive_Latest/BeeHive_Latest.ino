@@ -25,15 +25,15 @@ float weight; //Global variable for storing current weight on the scales
 //----------------------------------------------
 // End of initialisation of HX711 (Load cell amplifier)
 
-bool reseted = false;		//variable for falg that scale is resseted for today
+bool reseted = false;					//variable for falg that scale is resseted for today
 
-Adafruit_BMP280 bme;	// Define Pressure sensor class
-float bmeTemperature;	// bme sensor variable for temperature
-float bmePressure;		// bme sensor variable for pressure
-float bmeAltitude;		// bme sensor variable for Altitude
+Adafruit_BMP280 bme;					// Define Pressure sensor class
+float bmeTemperature;					// bme sensor variable for temperature
+float bmePressure;						// bme sensor variable for pressure
+float bmeAltitude;						// bme sensor variable for Altitude
 
 dht11 dht;
-#define DHTPIN 5			//pin for DHT11 sensor (humid and temperature) 
+#define DHTPIN 5						//pin for DHT11 sensor (humid and temperature) 
 
 DS3231 clock;
 RTCDateTime dt;
@@ -60,10 +60,10 @@ String atResponse;
 const String thingSpeakUpadate = "GET http://api.thingspeak.com/update?api_key=03SUMGLJ4MO9KAZK&";
 
 // initializing working variables
-float currentTemperature;			// current measured temperature
-float currentHumidity;				// current measured relative air humidity
+float currentTemperature;					// current measured temperature
+float currentHumidity;						// current measured relative air humidity
 
-SoftwareSerial gsmSerial(7, 8);		// Define pins for communicating with gsm module
+SoftwareSerial gsmSerial(7, 8);				// Define pins for communicating with gsm module
 
 DS3231 Clock;								//define class for DS3231 clock
 byte ADay, AHour, AMinute, ASecond, ABits;	// define clock variables
@@ -72,8 +72,8 @@ bool ADy, A12h, Apm;						//define clock variables
 void setup()
 {
 	//Scale setup
-	scale.set_scale(-39750);			//Calibration Factor obtained from calibrating sketch
-	scale.tare();						//Reset the scale to 0  
+	scale.set_scale(-39750);				//Calibration Factor obtained from calibrating sketch
+	scale.tare();							//Reset the scale to 0  
 
 	digitalWrite(gsmWakePin, HIGH);
 	analogReference(INTERNAL);
@@ -96,6 +96,7 @@ void setup()
 	// Initialize DS3231
 	clock.begin();
 	//clock.setDateTime(__DATE__, __TIME__);
+
 	Serial.println("...+++++++++...4");				// debugging purposses only
 
 	// Disable square wave output (use alarm triggering)
