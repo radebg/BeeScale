@@ -4,6 +4,7 @@
     Name:       BeeScaleNew.ino
     Created:	7/3/2019 5:50:14 PM
     Author:     DANIJELA-PC\Danijela
+	Edited: 10/09/2019
 */
 
 #include <RunningMedian.h>
