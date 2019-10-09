@@ -11,7 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeeScaleMain", "BeeScaleMai
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeScale_sht31", "..\..\..\Documents\Arduino\BeeScale_sht31\BeeScale_sht31.vcxproj", "{1893B7F8-C977-4A56-AC40-3FFD2C63963F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeScaleNew", "..\..\..\Documents\Arduino\BeeScaleNew\BeeScaleNew.vcxproj", "{3D281577-F865-4618-979B-BF815451C3DC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestScale", "TestScale\TestScale.vcxproj", "{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeScaleNew", "BeeScaleNew\BeeScaleNew.vcxproj", "{3D281577-F865-4618-979B-BF815451C3DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,16 @@ Global
 		{1893B7F8-C977-4A56-AC40-3FFD2C63963F}.Release|x64.ActiveCfg = Release|Win32
 		{1893B7F8-C977-4A56-AC40-3FFD2C63963F}.Release|x86.ActiveCfg = Release|Win32
 		{1893B7F8-C977-4A56-AC40-3FFD2C63963F}.Release|x86.Build.0 = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|ARM.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|x64.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|x86.ActiveCfg = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Debug|x86.Build.0 = Debug|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|ARM.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|ARM64.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|x64.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|x86.ActiveCfg = Release|Win32
+		{9B1AB3F6-6395-40ED-A0E2-7C8793B9A657}.Release|x86.Build.0 = Release|Win32
 		{3D281577-F865-4618-979B-BF815451C3DC}.Debug|ARM.ActiveCfg = Debug|Win32
 		{3D281577-F865-4618-979B-BF815451C3DC}.Debug|ARM64.ActiveCfg = Debug|Win32
 		{3D281577-F865-4618-979B-BF815451C3DC}.Debug|x64.ActiveCfg = Debug|Win32
