@@ -5,7 +5,8 @@
  Microcontroller: ArduinoProMini 8Mhz, 3.3V
 */
 
-//#include <Adafruit_Sensor.h>
+//#include <Adafruit_Sensor.h
+
 #include <dht11.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
