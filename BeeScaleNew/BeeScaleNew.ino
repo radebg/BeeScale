@@ -24,7 +24,7 @@
 
 //setting up pin for waking up GSM module
 //-------------------------------
-const byte gsmWakePin = 4;			// pin used for waking up the GSM module from sleep mode
+const byte gsmWakePin = 4;			// pin  used for waking up the GSM module from sleep mode
 //-------------------------------
 
 //Setting up variables for measurement of the battery

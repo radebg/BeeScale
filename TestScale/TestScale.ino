@@ -30,6 +30,8 @@ The HX711 board can be powered from 2.7V to 5V so the Arduino 5V power should be
 
 */
 
+#include <Adafruit_SHT31.h>
+#include <SparkFunBME280.h>
 #include <HX711.h>
 #define DOUT A2
 #define CLK A1

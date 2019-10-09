@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BeeScale.ino" />
+    <None Include="BeeScale-sht31.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.BeeScale.vsarduino.h">

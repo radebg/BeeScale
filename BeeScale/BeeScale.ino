@@ -7,6 +7,7 @@
 
 //#include <Adafruit_Sensor.h
 
+#include <Adafruit_BMP280.h>
 #include <dht11.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
